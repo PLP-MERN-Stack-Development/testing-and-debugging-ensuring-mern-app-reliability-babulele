@@ -3,13 +3,27 @@
 module.exports = {
   // Base configuration for all tests
   projects: [
-    // Server-side tests configuration
+    // Server-side unit tests configuration (no MongoDB)
     {
-      displayName: 'server',
+      displayName: 'server-unit',
       testEnvironment: 'node',
-      testMatch: ['<rootDir>/server/tests/**/*.test.js'],
+      testMatch: ['<rootDir>/server/tests/unit/**/*.test.js'],
       moduleFileExtensions: ['js', 'json', 'node'],
-      setupFilesAfterEnv: ['<rootDir>/server/tests/setup.js'],
+      setupFilesAfterEnv: ['<rootDir>/server/tests/setup-unit.js'],
+      coverageDirectory: '<rootDir>/coverage/server',
+      collectCoverageFrom: [
+        'server/src/**/*.js',
+        '!server/src/config/**',
+        '!**/node_modules/**',
+      ],
+    },
+    // Server-side integration tests configuration (with MongoDB)
+    {
+      displayName: 'server-integration',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/server/tests/integration/**/*.test.js'],
+      moduleFileExtensions: ['js', 'json', 'node'],
+      setupFilesAfterEnv: ['<rootDir>/server/tests/setup-integration.js'],
       coverageDirectory: '<rootDir>/coverage/server',
       collectCoverageFrom: [
         'server/src/**/*.js',
@@ -53,5 +67,5 @@ module.exports = {
       lines: 70,
     },
   },
-  testTimeout: 10000,
+  testTimeout: 30000, // 30 seconds for individual tests
 }; 
